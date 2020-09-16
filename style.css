@@ -9,7 +9,7 @@
     align-content: space-around;
     width: 500px;
     height: 500px;
-    border: 10px solid black;
+    border: 10px solid #000;
     background-color: #000;
 }
 
@@ -22,8 +22,23 @@
 }
 
 .col {
+    position: relative;
     background: green;
     width: 12%;
     height: 100%;
 }
 
+.black::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin: auto;
+    background-color: #000;
+    border-radius: 50%;
+}
