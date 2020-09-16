@@ -28,7 +28,8 @@
     height: 100%;
 }
 
-.black::after {
+.black::after,
+.white::after {
     content: '';
     position: absolute;
     top: 0;
@@ -41,4 +42,8 @@
     margin: auto;
     background-color: #000;
     border-radius: 50%;
+}
+
+.white::after {
+    background-color: #fff;
 }
