@@ -1,5 +1,6 @@
 let color = 'black'
 let enemyColor = 'white'
+let check = 0
 
 // 石の色を変える
 const chengeColor = (color) => {
@@ -188,15 +189,42 @@ function reverseDisc (results, color, enemyColor)
     }
 }
 
+// 石を置けるか
+const canPlace = (col, results, color, enemyColor) => {
+    // 置こうとした場所に石があった場合はreturn
+    if (col.match(color) || col.match(enemyColor)) return
+
+    reverses = []
+
+    for (result of results) {
+        let resultClass = result.getAttribute('class')
+
+        // 相手の色があったとき
+        if (resultClass.match(enemyColor)) {
+            reverses.push(result)
+        }
+        // 自分の色があったとき
+        else if (resultClass.match(color)) {
+            // 色を変えるべき石があったとき
+            if (reverses.length) {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return false
+        }
+    }
+}
+
 window.onload = () => {
     // 石を置く
     Array.from(document.getElementsByClassName('col')).forEach(element => {
         element.addEventListener('click', (e) => {
-            e.target.classList.add(color)
-            
             // クリックされたマスの行・列を取得
             let row = e.target.parentNode.getAttribute('id')
             let col = e.target.className
+
             
             everyDirection = [
                 // 上方向の石を取得
@@ -217,8 +245,19 @@ window.onload = () => {
                 upLeftDisc(row, col)
             ];
 
+            // 石が置けない時はreturnする
+            for (i = 0; i < everyDirection.length; i++) {
+                // 各方向で石を置けるか確かめて、おける場合はcheckに1を足す
+                if (canPlace(col, everyDirection[i], color, enemyColor)) check++
+            }
+            if (!check) return
+            check = 0
+            
+            // おいた石にクラスを追加
+            e.target.classList.add(color)
+
+            // 取得した石の色を変える
             for (result of everyDirection) {
-                // 取得した石の色を変える
                 reverseDisc(result, color, enemyColor)
             }
             
